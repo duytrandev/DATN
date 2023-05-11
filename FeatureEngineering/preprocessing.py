@@ -10,7 +10,7 @@ class Preprocesser(BaseEstimator, TransformerMixin):
         return self
 
     def remove_stop_words(self, X):
-        with open('/Users/DuyHome/HocTap/DATN/Vectorize/vietnamese-stopwords.txt') as f:
+        with open('/Users/DuyHome/HocTap/DATN/FeatureEngineering/vietnamese-stopwords.txt') as f:
             stop_words = f.readlines()
             stop_words = list(set(m.replace(' ', '_').strip()
                               for m in stop_words))
@@ -93,6 +93,24 @@ class Preprocesser(BaseEstimator, TransformerMixin):
             except Exception as e:
                 print("remove digit" + str(e) + "and index:" + str(i))
         return X
+
+    def removeNaAndDuplicates(self, X, subset):
+        X = pd.Series(X)
+        X = X.dropna()
+        X = X.drop_duplicates(subset=subset)
+        return X
+
+    def removeOutliersIQR(self, X):
+        q1 = X["Length"].quantile(0.25)
+
+        q3 = X["Length"].quantile(0.75)
+        iqr = q3 - q1
+
+        # Identify outliers as those that fall outside the range [Q1 - 1.5*IQR, Q3 + 1.5*IQR]
+        outliers = X[(X < q1 - 1.5*iqr) | (X > q3 + 1.5*iqr)]
+
+        # Remove outliers from the original DataFrame
+        return X[(X >= q1 - 1.5*iqr) & (X <= q3 + 1.5*iqr)]
 
     def transform(self, X):
         X = pd.Series(X)

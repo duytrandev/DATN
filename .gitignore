@@ -1,3 +1,8 @@
-/Data
 *.csv
 *.bin
+*.gz
+*tsv
+*.txt
+.DS_Store
+*.docx
+check.ipynb

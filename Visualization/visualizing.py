@@ -13,7 +13,7 @@ class Visualizer:
 
   def hist_samples(self):
     plt.title("Number of sample")
-    sns.countplot(x=data["Labels"], data=self.data)
+    sns.countplot(x=self.data["Labels"], data=self.data)
 
   def hist_length(self, col="Contents"):
     plt.xlabel("Length")
