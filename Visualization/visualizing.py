@@ -11,25 +11,25 @@ class Visualizer:
   def __init__(self, data):
     self.data = data
 
-  def hist_samples(self):
+  def hist_samples(self, col="Label"):
     plt.title("Number of sample")
-    sns.countplot(x=self.data["Labels"], data=self.data)
+    sns.countplot(x=self.data[col], data=self.data)
 
-  def hist_length(self, col="Contents"):
+  def hist_length(self):
     plt.xlabel("Length")
     plt.ylabel("Count")
     plt.title("Distribution of news length")
-    for label in self.data["Labels"].unique():
-      plt.hist(self.data[self.data['Labels'] == label]
+    for label in self.data["Label"].unique():
+      plt.hist(self.data[self.data['Label'] == label]
                ["Length"], bins=25, histtype=u'step')
       plt.legend(label)
       plt.show()
 
-  def plotWordCloud(self, col="Contents"):
-    for label in self.data["Labels"].unique():
+  def plotWordCloud(self, col="Content"):
+    for label in self.data["Label"].unique():
       comment_words = ''
       # iterate through the csv file
-      for val in self.data[self.data["Labels"] == label][col]:
+      for val in self.data[self.data["Label"] == label][col]:
           val = str(val)
 
           # split the value
@@ -48,10 +48,11 @@ class Visualizer:
       plt.title("word cloud {} news".format(label))
       plt.show()
 
-  def wordBarGraphFunction(self, column):
-    for label in self.data["Labels"].unique():
+  def wordBarGraphFunction(self, col):
+    for label in self.data["Label"].unique():
       topic_words = [z.lower() for y in
-                     [x.split() for x in self.data[column] if isinstance(x, str)]
+                     [x.split() for x in self.data[self.data["Label"] == label]
+                      [col] if isinstance(x, str)]
                      for z in y]
       word_count_dict = dict(Counter(topic_words))
       popular_words = sorted(
