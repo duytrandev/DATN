@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
-from underthesea import word_tokenize
 import re
 import pandas as pd
+from pyvi import ViTokenizer
 
 
 class Preprocesser(BaseEstimator, TransformerMixin):
@@ -61,7 +61,7 @@ class Preprocesser(BaseEstimator, TransformerMixin):
     def tokenize(self, X):
         for i, v in enumerate(X):
             try:
-                X = X.replace(v, word_tokenize(v, format="text"))
+                X = X.replace(v, ViTokenizer.tokenize(v))
             except Exception as e:
                 print("token" + str(e) + "and index:" + str(i))
         return X
@@ -81,7 +81,7 @@ class Preprocesser(BaseEstimator, TransformerMixin):
                 X = X.replace(v, re.sub(
                     r'[^\s\wáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ_]', ' ', v))
                 # xóa khoảng trắng thừa
-                X = X.replace(v, re.sub(r'\s+', ' ', v).strip())
+                X = X.replace(v, re.sub(r'\s+', ' ', v))
             except Exception as e:
                 print("remove noise" + str(e) + "and index:" + str(i))
         return X
@@ -94,23 +94,13 @@ class Preprocesser(BaseEstimator, TransformerMixin):
                 print("remove digit" + str(e) + "and index:" + str(i))
         return X
 
-    def removeNaAndDuplicates(self, X, subset):
-        X = pd.Series(X)
-        X = X.dropna()
-        X = X.drop_duplicates(subset=subset)
+    def remove_whitespace(self, X):
+        for i, v in enumerate(X):
+            try:
+                X = X.replace(" ".join(v.split()), v)
+            except Exception as e:
+                print("remove whitespace" + str(e) + "and index:" + str(i))
         return X
-
-    def removeOutliersIQR(self, X):
-        q1 = X["Length"].quantile(0.25)
-
-        q3 = X["Length"].quantile(0.75)
-        iqr = q3 - q1
-
-        # Identify outliers as those that fall outside the range [Q1 - 1.5*IQR, Q3 + 1.5*IQR]
-        outliers = X[(X < q1 - 1.5*iqr) | (X > q3 + 1.5*iqr)]
-
-        # Remove outliers from the original DataFrame
-        return X[(X >= q1 - 1.5*iqr) & (X <= q3 + 1.5*iqr)]
 
     def transform(self, X):
         X = pd.Series(X)
@@ -127,4 +117,6 @@ class Preprocesser(BaseEstimator, TransformerMixin):
         X = self.remove_noise_key(X)
         # remove stop word
         X = self.remove_stop_words(X)
+        # remote whitespace
+        X = self.remove_whitespace(X)
         return X
