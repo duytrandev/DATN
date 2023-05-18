@@ -6,3 +6,5 @@
 .DS_Store
 *.docx
 check.ipynb
+*.model
+*.npy

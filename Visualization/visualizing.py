@@ -28,7 +28,7 @@ class Visualizer:
       for label in self.data["Label"].unique():
         length = self.data[self.data['Label'] == label][col].apply(lambda x: len(str(x).split()))
         plt.hist(length, bins=25, histtype=u'step')
-        plt.legend(label)
+        plt.legend([label])
         plt.show()
 
   def plotWordCloud(self, col="Content", all_data=False):
