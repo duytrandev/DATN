@@ -17,12 +17,12 @@ class Preprocesser(BaseEstimator, TransformerMixin):
             for i, doc in enumerate(X):
                 arr = []
                 try:
-                    for word in doc.split(' '):
-                        if word not in stop_words:
+                    for word in doc.split():
+                        if word not in stop_words and word != " ":
                             arr.append(word)
                 except Exception as e:
                     print("stop_word" + str(e) + "and index:" + str(i))
-                temp = " ".join(arr)
+                temp = " ".join(arr).strip()
                 X = X.replace(doc, temp)
         return X
 
@@ -97,9 +97,23 @@ class Preprocesser(BaseEstimator, TransformerMixin):
     def remove_whitespace(self, X):
         for i, v in enumerate(X):
             try:
-                X = X.replace(" ".join(v.split()), v)
+                arr = []
+                for i in v.split():
+                    if i != " ":
+                        arr.append(i)
+                content = " ".join(arr)
+                X = X.replace(v, content)
             except Exception as e:
                 print("remove whitespace" + str(e) + "and index:" + str(i))
+        return X
+
+    def remove_punctuation(self, X):
+        for i, v in enumerate(X):
+            try:
+                X = X.replace(
+                    v, re.sub(r'[!"#$%&()*+,\-./:;<=>?@[\\\]^`{|}~\t\n1234567890]', '', v))
+            except Exception as e:
+                print("remove punctuation" + str(e))
         return X
 
     def transform(self, X):
@@ -109,6 +123,8 @@ class Preprocesser(BaseEstimator, TransformerMixin):
         X = self.remove_html(X)
         # chuẩn hóa unicode
         X = self.convert_unicode(X)
+        # xoa dau cau
+        X = self.remove_punctuation(X)
         # tách từ
         X = self.tokenize(X)
         # đưa về lower
@@ -116,7 +132,7 @@ class Preprocesser(BaseEstimator, TransformerMixin):
         # remove unneecessary key
         X = self.remove_noise_key(X)
         # remove stop word
-        X = self.remove_stop_words(X)
+        # X = self.remove_stop_words(X)
         # remote whitespace
         X = self.remove_whitespace(X)
         return X
