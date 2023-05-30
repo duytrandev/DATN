@@ -78,10 +78,10 @@ class Preprocesser(BaseEstimator, TransformerMixin):
         for i, v in enumerate(X):
             try:
                 # xóa các ký tự không cần thiết
-                X = X.replace(v, re.sub(
-                    r'[^\s\wáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ_]', ' ', v))
-                # xóa khoảng trắng thừa
-                X = X.replace(v, re.sub(r'\s+', ' ', v))
+                z = re.sub(
+                    r'[^\s\wáàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệóòỏõọôốồổỗộơớờởỡợíìỉĩịúùủũụưứừửữựýỳỷỹỵđ_]', ' ', v)
+                # g = re.sub(r'[.]', ' ', z)
+                X = X.replace(v, re.sub(r'\s+', ' ', z).strip())
             except Exception as e:
                 print("remove noise" + str(e) + "and index:" + str(i))
         return X
@@ -116,23 +116,28 @@ class Preprocesser(BaseEstimator, TransformerMixin):
                 print("remove punctuation" + str(e))
         return X
 
+    def remove_word_with_length_of_one(self, X):
+        for i, v in enumerate(X):
+            try:
+                new_docs = [word for word in v.split() if len(word) > 1]
+                X = X.replace(
+                    v, " ".join(new_docs).strip())
+            except Exception as e:
+                print("remove one length" + str(e))
+        return X
+
     def transform(self, X):
         X = pd.Series(X)
-        X = self.remove_digits(X)
-        # xóa html code
+  
         X = self.remove_html(X)
-        # chuẩn hóa unicode
         X = self.convert_unicode(X)
-        # xoa dau cau
-        X = self.remove_punctuation(X)
-        # tách từ
         X = self.tokenize(X)
-        # đưa về lower
         X = self.lower_key(X)
-        # remove unneecessary key
         X = self.remove_noise_key(X)
+        X = self.remove_digits(X)
+        X =  self.remove_word_with_length_of_one(X)
         # remove stop word
         # X = self.remove_stop_words(X)
         # remote whitespace
-        X = self.remove_whitespace(X)
+        # X = self.remove_whitespace(X)
         return X
