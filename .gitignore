@@ -8,3 +8,4 @@
 check.ipynb
 *.model
 *.npy
+*.h5

@@ -12,20 +12,26 @@ class Visualizer:
     self.data = data
 
   def hist_samples(self, col="Label"):
+    plt.figure(figsize=(10, 6))
     plt.title("Number of sample")
     sns.countplot(x=self.data[col], data=self.data)
 
   def hist_length(self, col, all_data=False):
-    plt.xlabel("Length")
-    plt.ylabel("Count")
-    plt.title("Distribution of news length")
+    
     if all_data:
+      plt.figure(figsize=(10, 6))
+      plt.xlabel("Length")
+      plt.ylabel("Count")
+      plt.title("Distribution of news length")
       length = self.data[col].apply(lambda x: len(str(x).split()))
       plt.hist(length, bins=25, histtype=u'step')
       plt.show()
     else:
-      
       for label in self.data["Label"].unique():
+        plt.figure(figsize=(10, 6))
+        plt.xlabel("Length")
+        plt.ylabel("Count")
+        plt.title("Distribution of news length")
         length = self.data[self.data['Label'] == label][col].apply(lambda x: len(str(x).split()))
         plt.hist(length, bins=25, histtype=u'step')
         plt.legend([label])
@@ -35,7 +41,7 @@ class Visualizer:
     if all_data == True:
       comment_words = ''
       # iterate through the csv file
-      for val in data[col]:
+      for val in self.data[col]:
           val = str(val)
           # split the value
           tokens = val.split()
@@ -43,7 +49,7 @@ class Visualizer:
       wordcloud = WordCloud(width=800, height=800,
                             background_color='white',
                             contour_color='steelblue',
-                            min_font_size=10).generate(comment_words)
+                            ).generate(comment_words)
 
       # plot the WordCloud image
       plt.figure(figsize=(8, 8), facecolor=None)
@@ -65,7 +71,7 @@ class Visualizer:
         wordcloud = WordCloud(width=800, height=800,
                               background_color='white',
                               contour_color='steelblue',
-                              min_font_size=10).generate(comment_words)
+                              ).generate(comment_words)
 
         # plot the WordCloud image
         plt.figure(figsize=(8, 8), facecolor=None)
@@ -91,7 +97,7 @@ class Visualizer:
       plt.yticks([x + 0.5 for x in range(50)],
                  reversed(popular_words_nonstop[0:50]))
       plt.title("chung")
-
+      plt.figure(figsize=(10, 6))
       plt.show()
     else:
       for label in self.data["Label"].unique():
@@ -109,5 +115,5 @@ class Visualizer:
         plt.yticks([x + 0.5 for x in range(50)],
                    reversed(popular_words_nonstop[0:50]))
         plt.title(label)
-
+        plt.figure(figsize=(10, 6))
         plt.show()
