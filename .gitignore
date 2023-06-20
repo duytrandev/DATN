@@ -1,0 +1,11 @@
+*.csv
+*.bin
+*.gz
+*tsv
+*.txt
+.DS_Store
+*.docx
+check.ipynb
+*.model
+*.npy
+*.h5
