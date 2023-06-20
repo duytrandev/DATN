@@ -1,0 +1,11 @@
+version: "3.8"
+
+service:
+  api-predict:
+    build:
+      context: ./fast-api
+      dockerfile: Dockerfile
+    port: "8000:8000"
+    volumes:
+      - ./:/api-predict
+    restart: always
