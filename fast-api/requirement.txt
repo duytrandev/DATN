@@ -5,5 +5,5 @@ pandas
 scikit-learn
 keras
 tensorflow
-pickle
 keras-preprocessing
+pyvi

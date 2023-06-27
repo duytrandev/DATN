@@ -1,0 +1,34 @@
+#input-text{
+    margin-left: 5%;
+    margin-top: 2%;
+    font-size: 15px;
+}
+.cc{
+    display: flex;
+    background-color: aquamarine;
+    margin-top: -2%;
+    /* Align-items: center;
+    Justify-items: center; */
+}
+.btn_classi{
+    margin-left: 1%;
+    height: 50px;
+    width: 200px;
+    font-size: 30px;
+    margin-top: 60px;
+    background-color: bisque;
+    border-radius: 20px;
+}
+.tit{
+    background-color: peru;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    font-size: 60px;
+}
+.cl{
+    background-color: aquamarine;
+}
+.noidungketqua{
+    display: flex;
+}
