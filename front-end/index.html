@@ -1,34 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="styles.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Document</title>
-</head>
-<body>
-    
-    <div class="tit">app rất ngu</div>
-    <div class="cl">
-        <div class="noidungketqua">
-            <h2 style="margin-left: 12%; width: fit-content;">Nhập nội dung bài viết vào ô dưới</h2>
-            <h2 style="margin-left: 40%; width: fit-content;color: red; ">Kết quả</h2>
+  </head>
+
+  <body>
+    <div class="app-container">
+      <div class="header">
+        <h1 style="text-align: center" class="header-title">
+          HỆ THỐNG PHÂN LOẠI VĂN BẢN TỰ ĐỘNG SỬ DỤNG HỌC MÁY VÀ HỌC SÂU
+        </h1>
+      </div>
+      <div class="content">
+        <div class="content-left">
+          <label for="input-text-area" class="label">
+            Nhập nội dung bài viết
+          </label>
+          <textarea
+            placeholder="Nhập nội dung..."
+            class="input-text-area"
+            id="input-text-area"
+          ></textarea>
         </div>
-        <div class="cc">
-            <textarea name="" id="input-text" cols="70" rows="40"></textarea>
-            <div style="display: inline-block; margin-left: 30px;">
-                <label style="font-size: 30px;" for="cars">Vui lòng chọn thuật toán:</label>
-                <select style="font-size: 20px; margin-top: 50px;" name="cars" id="cars">
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
-                </select>
-                <!-- <img style="width: 30px; height: 30px;" src="https://icon-library.com/images/click-icon-png/click-icon-png-15.jpg" alt=""> -->
-                <button class="btn_classi" type="button">Phân loại</button>
+        <div class="content-right">
+          <div class="choose-container">
+            <label class="label-choose"> Chọn thuật toán </label>
+            <select id="choose" class="input-select">
+              <option value="1">Transfomer</option>
+              <option value="2">LSTM</option>
+              <option value="3">SVM</option>
+              <option value="4">RNN</option>
+            </select>
+          </div>
+          <button class="btn-submit">Phân loại</button>
+          <div class="dot-spinner" id="loader">
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+            <div class="dot-spinner__dot"></div>
+          </div>
+          <div class="results-container">
+            <label class="label-choose"> Kết quả </label>
+            <div class="item-container">
+              <p class="label-item-container">Thể loại</p>
+              <p id="label" class="content-item-container">Thể thao</p>
             </div>
-            <label style="margin-top: 60px; margin-left: 80px;" for="">129837912837129387</label>
+            <div class="item-container">
+              <p class="label-item-container">Độ tin cậy</p>
+              <p id="cond" class="content-item-container">95%</p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</body>
+    <script src="index.js"></script>
+  </body>
 </html>
