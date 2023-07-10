@@ -1,22 +1,38 @@
 from fastapi import FastAPI
-from models.model import predict_svm, predict_lstm
-
+from models.model import predict_svm, predict_lstm, predict_transfomer
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 app = FastAPI()
+
+origins = [
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+class Content(BaseModel):
+    input: str
 
 @app.get('/')
 def home():
-    return 'ok'
+    return 'ok la'
 
-@app.post('/predict/svm')
-def http_predict_svm(input):
+@app.post('/cc')
+def cc(input: Content):
+    return {'ok': 'ok'}
+@app.post('/predict/svm/')
+def http_predict_svm(input: Content):
+    return predict_svm(input.input)
     
-    return {'rs': predict_svm(input)[0]}
-    
-@app.post("/predict/lstm")
-def http_predict_lstm(input):
-    print(predict_lstm(input)[0])
-    return {'rs': predict_lstm(input)[0]}
+@app.post("/predict/lstm/")
+def http_predict_lstm(input: Content):
+    return predict_lstm(input.input)
 
-@app.post("/predict/transfomer")
-def http_predict_transfomer(input):
-    return {'rs': predict_lstm(input)}
+@app.post("/predict/transfomer/")
+def http_predict_transfomer(input: Content):
+    return predict_transfomer(input.input)
